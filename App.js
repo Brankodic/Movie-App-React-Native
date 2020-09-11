@@ -11,7 +11,7 @@ class App extends React.Component {
   render() {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="MovieDetails">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="MovieDetails" component={MovieDetailsScreen} />
         </Stack.Navigator>
