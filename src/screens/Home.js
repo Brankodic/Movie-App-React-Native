@@ -1,22 +1,53 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 
+import {API_KEY} from '@env';
+import {getData, getMovieListUrl} from '../services/api';
 import {SearchInput} from '../components';
 import {MovieCard} from '../components';
 
 const Home = ({navigation}) => {
+  const [movieListState, setState] = useState({
+    apiMoviesPage: 2,
+    loadMoreCounter: 1,
+    movieSliceValue: 12,
+    moviesArray: [],
+  });
+  const {
+    apiMoviesPage,
+    loadMoreCounter,
+    movieSliceValue,
+    moviesArray,
+  } = movieListState;
+
   const {container, text, movieContainer, item} = styles;
-  const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  useEffect(() => {
+    if (loadMoreCounter < 2) {
+      (async () => {
+        const res = await getData(getMovieListUrl(API_KEY));
+        setState({
+          ...movieListState,
+          moviesArray: res.results,
+        });
+      })();
+    }
+  });
+
   return (
     <View style={container}>
       <ScrollView>
         <SearchInput />
         <Text style={text}>What's Popular</Text>
         <View style={movieContainer}>
-          {array.map((key) => {
+          {moviesArray.slice(0, movieSliceValue).map((movie) => {
             return (
-              <View key={key} style={item}>
-                <MovieCard navigation={navigation} />
+              <View key={movie.id} style={item}>
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  navigation={navigation}
+                />
               </View>
             );
           })}
