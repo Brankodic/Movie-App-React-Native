@@ -10,7 +10,6 @@ const MovieCastText = () => {
   return (
     <View style={styles.container}>
       {cast.charachter.map((name, key) => {
-        console.log(name);
         return (
           <View style={styles.box} key={key}>
             <Text style={styles.boldText}>{name}</Text>
@@ -19,7 +18,6 @@ const MovieCastText = () => {
         );
       })}
       {cast.director.map((name, key) => {
-        console.log(name);
         return (
           <View style={styles.box} key={key}>
             <Text style={styles.boldText}>{name}</Text>
@@ -28,7 +26,6 @@ const MovieCastText = () => {
         );
       })}
       {cast.screenplay.map((name, key) => {
-        console.log(name);
         return (
           <View style={styles.box} key={key}>
             <Text style={styles.boldText}>{name}</Text>

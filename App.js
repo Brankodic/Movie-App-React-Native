@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import {View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {Home, MovieDetailsScreen} from './src/screens';
-import {HeaderImage} from './src/components';
+import {HeaderImage, HeaderBackImage} from './src/components';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +24,9 @@ class App extends React.Component {
           />
           <Stack.Screen
             options={{
+              headerBackImage: () => <HeaderBackImage />,
               headerTitle: (props) => <HeaderImage {...props} />,
+              headerRight: () => <View />,
               headerStyle: {backgroundColor: '#0B253F'},
             }}
             name="MovieDetails"

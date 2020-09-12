@@ -1,8 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import {SearchInput} from '../components';
 
-const Home = () => {
+import {SearchInput} from '../components';
+import {MovieCard} from '../components';
+
+const Home = ({navigation}) => {
   const {container, text, movieContainer, item} = styles;
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
@@ -14,7 +16,7 @@ const Home = () => {
           {array.map((key) => {
             return (
               <View key={key} style={item}>
-                <Text>{key}</Text>
+                <MovieCard navigation={navigation} />
               </View>
             );
           })}
@@ -35,16 +37,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   item: {
-    padding: 20,
     margin: 5,
     marginBottom: 30,
     width: 110,
     height: 150,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderColor: 'red',
-    fontSize: 10,
   },
   text: {
     color: '#0B253F',
