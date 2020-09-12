@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {MovieCastText} from '../components';
 
 const MovieDetailsScreen = () => {
   const img = {
@@ -28,6 +29,7 @@ const MovieDetailsScreen = () => {
         C:\Users\Srki\Desktop\Movie-App-React-Native\src\screens\MovieDetailsScreen.js:
         Unexpected token, expected "," (42:12)
       </Text>
+      <MovieCastText />
     </View>
   );
 };
@@ -36,12 +38,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    flexDirection: 'column',
   },
   image: {
-    flex: 3 / 6,
-    textAlign: 'center',
-    color: 'white',
+    flexDirection: 'column',
+    flex: 4 / 5,
   },
   imgContainer: {
     position: 'absolute',
