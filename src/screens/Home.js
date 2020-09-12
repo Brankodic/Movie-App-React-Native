@@ -1,22 +1,25 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {SearchInput} from '../components';
 
 const Home = () => {
+  const {container, text, movieContainer, item} = styles;
   const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
-    <View style={styles.container}>
-      <SearchInput />
-      <Text style={styles.text}>What's Popular</Text>
-      <View style={styles.movieContainer}>
-        {array.map((key) => {
-          return (
-            <View key={key} style={styles.item}>
-              <Text>{key}</Text>
-            </View>
-          );
-        })}
-      </View>
+    <View style={container}>
+      <ScrollView>
+        <SearchInput />
+        <Text style={text}>What's Popular</Text>
+        <View style={movieContainer}>
+          {array.map((key) => {
+            return (
+              <View key={key} style={item}>
+                <Text>{key}</Text>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -44,6 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   text: {
+    color: '#0B253F',
     fontSize: 25,
     margin: 15,
   },

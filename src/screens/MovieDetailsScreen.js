@@ -3,26 +3,37 @@ import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import {MovieCastText} from '../components';
 
 const MovieDetailsScreen = () => {
+  const {
+    container,
+    image,
+    imgContainer,
+    title,
+    year,
+    colorWhite,
+    boldText,
+    overviewTitle,
+    overview,
+  } = styles;
   const img = {
     uri:
       'https://m.media-amazon.com/images/M/MV5BZmJkMTg5ZDMtODk4Ni00MzQyLTk0MjctNDI5OTc5MTExZDFmXkEyXkFqcGdeQXVyNDQ2NTUwODc@._V1_.jpg',
   };
   return (
-    <View style={styles.container}>
-      <ImageBackground source={img} style={styles.image}>
-        <View style={styles.imgContainer}>
-          <Text style={styles.title}>
+    <View style={container}>
+      <ImageBackground source={img} style={image}>
+        <View style={imgContainer}>
+          <Text style={title}>
             Hackerman
-            <Text style={(styles.colorWhite, styles.year)}>(2018)</Text>
+            <Text style={(colorWhite, year)}>(2018)</Text>
           </Text>
-          <Text style={styles.colorWhite}>24/05/2018 (Poland)</Text>
-          <Text style={styles.colorWhite}>
-            Short, Action <Text style={styles.boldText}>1h 3m</Text>
+          <Text style={colorWhite}>24/05/2018 (Poland)</Text>
+          <Text style={colorWhite}>
+            Short, Action <Text style={boldText}>1h 3m</Text>
           </Text>
         </View>
       </ImageBackground>
-      <Text style={styles.overviewTitle}>Overview</Text>
-      <Text style={styles.overview}>
+      <Text style={overviewTitle}>Overview</Text>
+      <Text style={overview}>
         [Error: TransformError SyntaxError:
         C:\Users\Srki\Desktop\Movie-App-React-Native\src\screens\MovieDetailsScreen.js:
         Unexpected token, expected "," (36:4)[Error: TransformError SyntaxError:
