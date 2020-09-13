@@ -7,18 +7,20 @@ import {SearchInput} from '../components';
 import {MovieCard} from '../components';
 
 const Home = ({navigation}) => {
-  const [movieListState, setState] = useState({
+  const [state, setState] = useState({
     apiMoviesPage: 2,
     loadMoreCounter: 1,
     movieSliceValue: 12,
     moviesArray: [],
+    searchStatus: false,
   });
   const {
     apiMoviesPage,
     loadMoreCounter,
     movieSliceValue,
     moviesArray,
-  } = movieListState;
+    searchStatus,
+  } = state;
 
   const {container, text, row, movieContainer, item} = styles;
 
@@ -27,7 +29,7 @@ const Home = ({navigation}) => {
       (async () => {
         const res = await getData(getMovieListUrl(API_KEY));
         setState({
-          ...movieListState,
+          ...state,
           moviesArray: res.results,
         });
       })();
@@ -38,7 +40,7 @@ const Home = ({navigation}) => {
     (async () => {
       const res = await getData(getMoreMoviesUrl(API_KEY, apiMoviesPage));
       setState({
-        ...movieListState,
+        ...state,
         moviesArray: moviesArray.concat(res.results),
         apiMoviesPage: apiMoviesPage + 1,
         loadMoreCounter: loadMoreCounter + 1,
@@ -46,33 +48,59 @@ const Home = ({navigation}) => {
       });
     })();
     setState({
-      ...movieListState,
+      ...state,
       loadMoreCounter: loadMoreCounter + 1,
       movieSliceValue: movieSliceValue + 12,
     });
   };
 
+  const handleSearchScreenOn = () => {
+    if (!searchStatus) {
+      setState({
+        ...state,
+        searchStatus: true,
+      });
+    }
+  };
+  const handleSearchScreenOff = () => {
+    setState({
+      ...state,
+      searchStatus: false,
+    });
+  };
+
   return (
     <View style={container}>
-      <SearchInput />
-      <Text style={text}>What's Popular</Text>
-      <FlatList
-        numColumns={3}
-        contentContainerStyle={movieContainer}
-        columnWrapperStyle={row}
-        onEndReached={handleLoadMore}
-        data={moviesArray.slice(0, movieSliceValue)}
-        keyExtractor={(movie, index) => {
-          return index.toString();
-        }}
-        renderItem={(movie) => {
-          return (
-            <View style={item}>
-              <MovieCard movie={movie.item} navigation={navigation} />
-            </View>
-          );
-        }}
+      <SearchInput
+        searchOn={handleSearchScreenOn}
+        searchOff={handleSearchScreenOff}
       />
+      <View>
+        {searchStatus ? (
+          <Text style={text}>Search Results</Text>
+        ) : (
+          <View>
+            <Text style={text}>What's Popular</Text>
+            <FlatList
+              numColumns={3}
+              contentContainerStyle={movieContainer}
+              columnWrapperStyle={row}
+              onEndReached={handleLoadMore}
+              data={moviesArray.slice(0, movieSliceValue)}
+              keyExtractor={(movie, index) => {
+                return index.toString();
+              }}
+              renderItem={(movie) => {
+                return (
+                  <View style={item}>
+                    <MovieCard movie={movie.item} navigation={navigation} />
+                  </View>
+                );
+              }}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 };

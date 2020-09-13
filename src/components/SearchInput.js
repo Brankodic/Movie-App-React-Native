@@ -1,31 +1,25 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
 import {SearchBar} from 'react-native-elements';
 
-const SearchInput = () => {
+const SearchInput = (props) => {
+  const [state, setState] = useState({
+    value: '',
+  });
+
+  function handlerInput(value) {
+    setState({...state, value: value});
+    props.searchOn();
+  }
   return (
     <SearchBar
-      containerStyle={styles.container}
-      inputContainerStyle={styles.inputContainer}
-      cancelIcon
-      round
+      onChangeText={(text) => handlerInput(text)}
+      onCancel={props.searchOff}
+      value={state.value}
+      platform="ios"
       lightTheme
       placeholder="Search"
     />
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    width: '95%',
-    marginLeft: '2.5%',
-    marginTop: 15,
-    backgroundColor: '#fff',
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-  },
-  inputContainer: {
-    backgroundColor: '#eee',
-  },
-});
 
 export default SearchInput;
