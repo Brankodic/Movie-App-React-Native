@@ -12,7 +12,9 @@ const MovieCard = (props) => {
       key={movie.id}
       style={styles.img}
       title="Go to Details"
-      onPress={() => navigation.navigate('MovieDetails')}>
+      onPress={() =>
+        navigation.navigate('MovieDetails', {paramName: movie.id})
+      }>
       <Image
         style={styles.img}
         source={{

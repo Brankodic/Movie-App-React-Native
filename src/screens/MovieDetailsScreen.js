@@ -1,30 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+
+import {API_KEY} from '@env';
+import {getData, getSingleMovieUrl} from '../services/api';
 import {MovieCastText} from '../components';
 
-const MovieDetailsScreen = () => {
+const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
+
+const MovieDetailsScreen = ({route}) => {
+  const [state, setState] = useState({
+    movie: {},
+    image: undefined,
+  });
+  const {movie, image} = state;
+  const {overview} = movie;
+
   const {
     container,
-    image,
+    imageStyle,
     imgContainer,
-    title,
-    year,
+    titleStyle,
+    yearStyle,
     colorWhite,
     boldText,
     overviewTitle,
-    overview,
+    overviewStyle,
   } = styles;
-  const img = {
-    uri:
-      'https://m.media-amazon.com/images/M/MV5BZmJkMTg5ZDMtODk4Ni00MzQyLTk0MjctNDI5OTc5MTExZDFmXkEyXkFqcGdeQXVyNDQ2NTUwODc@._V1_.jpg',
-  };
+
+  useEffect(() => {
+    (async () => {
+      const res = await getData(
+        getSingleMovieUrl(API_KEY, route.params.paramName),
+      );
+      setState({
+        ...state,
+        movie: res,
+        image: IMAGE_PATH + res.poster_path,
+      });
+    })();
+  }, []);
+
+  console.log(movie);
   return (
     <View style={container}>
-      <ImageBackground source={img} style={image}>
+      <ImageBackground source={{uri: image}} style={imageStyle}>
         <View style={imgContainer}>
-          <Text style={title}>
+          <Text style={titleStyle}>
             Hackerman
-            <Text style={(colorWhite, year)}>(2018)</Text>
+            <Text style={(colorWhite, yearStyle)}>(2018)</Text>
           </Text>
           <Text style={colorWhite}>24/05/2018 (Poland)</Text>
           <Text style={colorWhite}>
@@ -33,7 +56,7 @@ const MovieDetailsScreen = () => {
         </View>
       </ImageBackground>
       <Text style={overviewTitle}>Overview</Text>
-      <Text style={overview}>
+      <Text style={overviewStyle}>
         [Error: TransformError SyntaxError:
         C:\Users\Srki\Desktop\Movie-App-React-Native\src\screens\MovieDetailsScreen.js:
         Unexpected token, expected "," (36:4)[Error: TransformError SyntaxError:
@@ -50,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  image: {
+  imageStyle: {
     flexDirection: 'column',
     flex: 4 / 5,
   },
@@ -65,13 +88,13 @@ const styles = StyleSheet.create({
   boldText: {
     fontWeight: 'bold',
   },
-  title: {
+  titleStyle: {
     color: 'white',
     fontWeight: 'bold',
     paddingBottom: 10,
     fontSize: 30,
   },
-  year: {
+  yearStyle: {
     fontWeight: 'normal',
   },
   overviewTitle: {
@@ -80,7 +103,7 @@ const styles = StyleSheet.create({
     color: '#0B253F',
     fontSize: 25,
   },
-  overview: {
+  overviewStyle: {
     padding: 12,
   },
 });
