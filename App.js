@@ -17,6 +17,7 @@ class App extends React.Component {
           <Stack.Screen
             options={{
               headerTitle: (props) => <HeaderImage {...props} />,
+              cardStyle: {backgroundColor: 'white'},
               headerStyle: {backgroundColor: '#0B253F'},
             }}
             name="Home"
@@ -27,6 +28,7 @@ class App extends React.Component {
               headerBackImage: () => <HeaderBackImage />,
               headerTitle: (props) => <HeaderImage {...props} />,
               headerRight: () => <View />,
+              cardStyle: {backgroundColor: 'white'},
               headerStyle: {backgroundColor: '#0B253F'},
             }}
             name="MovieDetails"

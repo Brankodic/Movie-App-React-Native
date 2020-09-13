@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 
 import {API_KEY} from '@env';
 import {getData, getMovieListUrl, getMoreMoviesUrl} from '../services/api';
-import {SearchInput} from '../components';
-import {MovieCard} from '../components';
+import {SearchInput, MovieList} from '../components';
 
 const Home = ({navigation}) => {
   const [state, setState] = useState({
@@ -22,7 +21,7 @@ const Home = ({navigation}) => {
     searchStatus,
   } = state;
 
-  const {container, text, row, movieContainer, item} = styles;
+  const {text} = styles;
 
   useEffect(() => {
     if (loadMoreCounter < 2) {
@@ -70,60 +69,31 @@ const Home = ({navigation}) => {
   };
 
   return (
-    <View style={container}>
+    <>
       <SearchInput
-        searchOn={handleSearchScreenOn}
-        searchOff={handleSearchScreenOff}
+        searchScreenOn={handleSearchScreenOn}
+        searchScreenOff={handleSearchScreenOff}
       />
-      <View>
-        {searchStatus ? (
-          <Text style={text}>Search Results</Text>
-        ) : (
-          <View>
-            <Text style={text}>What's Popular</Text>
-            <FlatList
-              numColumns={3}
-              contentContainerStyle={movieContainer}
-              columnWrapperStyle={row}
-              onEndReached={handleLoadMore}
-              data={moviesArray.slice(0, movieSliceValue)}
-              keyExtractor={(movie, index) => {
-                return index.toString();
-              }}
-              renderItem={(movie) => {
-                return (
-                  <View style={item}>
-                    <MovieCard movie={movie.item} navigation={navigation} />
-                  </View>
-                );
-              }}
-            />
-          </View>
-        )}
-      </View>
-    </View>
+      {searchStatus ? (
+        <Text style={text}>Search Results</Text>
+      ) : (
+        <>
+          <Text style={text}>What's Popular</Text>
+          <MovieList
+            loadMore={handleLoadMore}
+            moviesArray={moviesArray}
+            movieSliceValue={movieSliceValue}
+            navigation={navigation}
+          />
+        </>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-  },
-  row: {
-    flex: 1,
-    justifyContent: 'space-around',
-  },
-  movieContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  item: {
-    margin: 5,
-    marginBottom: 30,
-    width: 110,
-    height: 150,
-  },
   text: {
+    backgroundColor: '#fff',
     color: '#0B253F',
     fontSize: 25,
     margin: 15,

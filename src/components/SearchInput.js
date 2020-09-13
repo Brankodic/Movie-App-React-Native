@@ -3,20 +3,23 @@ import {SearchBar} from 'react-native-elements';
 
 const SearchInput = (props) => {
   const [state, setState] = useState({
-    value: '',
+    inputValue: '',
   });
+  const {inputValue} = state;
+
+  const {searchScreenOn, searchScreenOff} = props;
 
   function handlerInput(value) {
-    setState({...state, value: value});
-    props.searchOn();
+    setState({...state, inputValue: value});
+    searchScreenOn();
   }
+
   return (
     <SearchBar
       onChangeText={(text) => handlerInput(text)}
-      onCancel={props.searchOff}
-      value={state.value}
+      onCancel={searchScreenOff}
+      value={inputValue}
       platform="ios"
-      lightTheme
       placeholder="Search"
     />
   );
