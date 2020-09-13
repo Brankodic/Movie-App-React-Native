@@ -1,8 +1,13 @@
 export const getMovieListUrl = (API_KEY) => {
   return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
 };
+
 export const getSingleMovieUrl = (API_KEY, movieId) => {
   return `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`;
+};
+
+export const getMovieCreditsUrl = (API_KEY, movieId) => {
+  return `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`;
 };
 
 export async function getData(url) {

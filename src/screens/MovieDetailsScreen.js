@@ -42,8 +42,6 @@ const MovieDetailsScreen = ({route}) => {
     })();
   }, []);
 
-  console.log(movie);
-
   return (
     <View style={container}>
       <ImageBackground source={{uri: image}} style={imageStyle}>
