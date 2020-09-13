@@ -12,12 +12,6 @@ const MovieCastText = ({movieId}) => {
     production: ['name'],
   });
 
-  const cast = {
-    charachter: ['Đuro Đaković', 'Rade Končar'],
-    director: ['Ja Direktor'],
-    screenplay: ['Petar Perić', 'Ivan ivić', 'Marko Marić'],
-  };
-
   useEffect(() => {
     (async () => {
       const res = await getData(getMovieCreditsUrl(API_KEY, movieId));
@@ -43,16 +37,14 @@ const MovieCastText = ({movieId}) => {
         return (
           <View style={styles.box} key={key}>
             <Text style={styles.boldText}>{name}</Text>
-            <Text>Characther</Text>
+            <Text>Cast</Text>
           </View>
         );
       })}
-
       <View style={styles.box}>
         <Text style={styles.boldText}>{state.director}</Text>
         <Text>Director</Text>
       </View>
-
       {state.production.map((name, key) => {
         return (
           <View style={styles.box} key={key}>
@@ -64,8 +56,6 @@ const MovieCastText = ({movieId}) => {
     </View>
   );
 };
-
-export default MovieCastText;
 
 const styles = StyleSheet.create({
   container: {
@@ -83,6 +73,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   boldText: {
+    paddingBottom: 3,
     fontWeight: 'bold',
   },
 });
+
+export default MovieCastText;

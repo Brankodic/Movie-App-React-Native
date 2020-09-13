@@ -2,6 +2,10 @@ export const getMovieListUrl = (API_KEY) => {
   return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
 };
 
+export const getMoreMoviesUrl = (API_KEY, apiMoviesPage) => {
+  return `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${apiMoviesPage}`;
+};
+
 export const getSingleMovieUrl = (API_KEY, movieId) => {
   return `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}`;
 };

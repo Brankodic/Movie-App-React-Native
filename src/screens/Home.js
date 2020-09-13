@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, FlatList} from 'react-native';
+
 
 import {API_KEY} from '@env';
 import {getData, getMovieListUrl} from '../services/api';
@@ -20,7 +21,7 @@ const Home = ({navigation}) => {
     moviesArray,
   } = movieListState;
 
-  const {container, text, movieContainer, item} = styles;
+  const {container, text, listContainer, movieContainer, item} = styles;
 
   useEffect(() => {
     if (loadMoreCounter < 2) {
@@ -32,27 +33,28 @@ const Home = ({navigation}) => {
         });
       })();
     }
-  });
+  }, []);
 
   return (
     <View style={container}>
-      <ScrollView>
-        <SearchInput />
-        <Text style={text}>What's Popular</Text>
-        <View style={movieContainer}>
-          {moviesArray.slice(0, movieSliceValue).map((movie) => {
-            return (
-              <View key={movie.id} style={item}>
-                <MovieCard
-                  key={movie.id}
-                  movie={movie}
-                  navigation={navigation}
-                />
-              </View>
-            );
-          })}
-        </View>
-      </ScrollView>
+      <SearchInput />
+      <Text style={text}>What's Popular</Text>
+      <FlatList
+        contentContainerStyle={movieContainer}
+        data={moviesArray.slice(0, movieSliceValue)}
+        keyExtractor={(movie) => movie.id.toString()}
+        renderItem={(movie) => {
+          return (
+            <View style={item}>
+              <MovieCard
+                key={movie.item.id}
+                movie={movie.item}
+                navigation={navigation}
+              />
+            </View>
+          );
+        }}
+      />
     </View>
   );
 };
