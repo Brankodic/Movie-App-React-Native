@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 
-
 import {API_KEY} from '@env';
-import {getData, getMovieListUrl} from '../services/api';
+import {getData, getMovieListUrl, getMoreMoviesUrl} from '../services/api';
 import {SearchInput} from '../components';
 import {MovieCard} from '../components';
 
@@ -21,7 +20,7 @@ const Home = ({navigation}) => {
     moviesArray,
   } = movieListState;
 
-  const {container, text, listContainer, movieContainer, item} = styles;
+  const {container, text, row, movieContainer, item} = styles;
 
   useEffect(() => {
     if (loadMoreCounter < 2) {
@@ -35,22 +34,41 @@ const Home = ({navigation}) => {
     }
   }, []);
 
+  const handleLoadMore = () => {
+    (async () => {
+      const res = await getData(getMoreMoviesUrl(API_KEY, apiMoviesPage));
+      setState({
+        ...movieListState,
+        moviesArray: moviesArray.concat(res.results),
+        apiMoviesPage: apiMoviesPage + 1,
+        loadMoreCounter: loadMoreCounter + 1,
+        movieSliceValue: movieSliceValue + 12,
+      });
+    })();
+    setState({
+      ...movieListState,
+      loadMoreCounter: loadMoreCounter + 1,
+      movieSliceValue: movieSliceValue + 12,
+    });
+  };
+
   return (
     <View style={container}>
       <SearchInput />
       <Text style={text}>What's Popular</Text>
       <FlatList
+        numColumns={3}
         contentContainerStyle={movieContainer}
+        columnWrapperStyle={row}
+        onEndReached={handleLoadMore}
         data={moviesArray.slice(0, movieSliceValue)}
-        keyExtractor={(movie) => movie.id.toString()}
+        keyExtractor={(movie, index) => {
+          return index.toString();
+        }}
         renderItem={(movie) => {
           return (
             <View style={item}>
-              <MovieCard
-                key={movie.item.id}
-                movie={movie.item}
-                navigation={navigation}
-              />
+              <MovieCard movie={movie.item} navigation={navigation} />
             </View>
           );
         }}
@@ -63,11 +81,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
   },
+  row: {
+    flex: 1,
+    justifyContent: 'space-around',
+  },
   movieContainer: {
     display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
   },
   item: {
     margin: 5,
