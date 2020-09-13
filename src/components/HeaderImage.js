@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 
-import tmdbLogo from '../services/assets/tmdbLogo.png';
+import tmdbLogo from '../assets/tmdbLogo.png';
 
 const HeaderImage = () => {
   return <Image style={styles.img} source={tmdbLogo} />;

@@ -5,7 +5,7 @@ import {API_KEY} from '@env';
 import {getData, getMovieListUrl, getMoreMoviesUrl} from '../services/api';
 import {SearchInput, MovieList} from '../components';
 
-const Home = ({navigation}) => {
+const MovieListScreen = ({navigation}) => {
   const [state, setState] = useState({
     apiMoviesPage: 2,
     loadMoreCounter: 1,
@@ -74,9 +74,8 @@ const Home = ({navigation}) => {
         searchScreenOn={handleSearchScreenOn}
         searchScreenOff={handleSearchScreenOff}
       />
-      {searchStatus ? (
-        <Text style={text}>Search Results</Text>
-      ) : (
+      {searchStatus && <Text style={text}>Search Results</Text>}
+      {!searchStatus && (
         <>
           <Text style={text}>What's Popular</Text>
           <MovieList
@@ -100,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default MovieListScreen;
