@@ -10,10 +10,9 @@ const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
 const MovieDetailsScreen = ({route}) => {
   const [state, setState] = useState({
     movie: {},
-    image: undefined,
   });
-  const {movie, image} = state;
-  const {overview} = movie;
+  const {movie, image, year, genre, language} = state;
+  const {overview, title, release_date, runtime} = movie;
 
   const {
     container,
@@ -36,34 +35,35 @@ const MovieDetailsScreen = ({route}) => {
         ...state,
         movie: res,
         image: IMAGE_PATH + res.poster_path,
+        year: res.release_date.slice(0, 4),
+        language: res.original_language.toUpperCase(),
+        genre: res.genres[0].name,
       });
     })();
   }, []);
 
   console.log(movie);
+
   return (
     <View style={container}>
       <ImageBackground source={{uri: image}} style={imageStyle}>
         <View style={imgContainer}>
           <Text style={titleStyle}>
-            Hackerman
-            <Text style={(colorWhite, yearStyle)}>(2018)</Text>
+            {title}
+            <Text style={(colorWhite, yearStyle)}>({year})</Text>
           </Text>
-          <Text style={colorWhite}>24/05/2018 (Poland)</Text>
           <Text style={colorWhite}>
-            Short, Action <Text style={boldText}>1h 3m</Text>
+            {release_date} ({language})
+          </Text>
+          <Text style={colorWhite}>
+            {genre}
+            <Text style={boldText}> {runtime}m</Text>
           </Text>
         </View>
       </ImageBackground>
       <Text style={overviewTitle}>Overview</Text>
-      <Text style={overviewStyle}>
-        [Error: TransformError SyntaxError:
-        C:\Users\Srki\Desktop\Movie-App-React-Native\src\screens\MovieDetailsScreen.js:
-        Unexpected token, expected "," (36:4)[Error: TransformError SyntaxError:
-        C:\Users\Srki\Desktop\Movie-App-React-Native\src\screens\MovieDetailsScreen.js:
-        Unexpected token, expected "," (42:12)
-      </Text>
-      <MovieCastText />
+      <Text style={overviewStyle}>{overview}</Text>
+      <MovieCastText movieId={route.params.paramName} />
     </View>
   );
 };
