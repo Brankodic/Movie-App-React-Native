@@ -7,9 +7,9 @@ import {getData, getMovieCreditsUrl} from '../services/api';
 
 const MovieCastText = ({movieId}) => {
   const [state, setState] = useState({
-    charachters: ['name', 'name'],
-    director: 'name',
-    production: ['name'],
+    charachters: [],
+    director: '',
+    production: [],
   });
 
   useEffect(() => {
