@@ -9,7 +9,9 @@ const usePopularMovies = () => {
     searchedMoviesArray,
   });
 
-  const {searchQuery, searchedMoviesArray} = searchMovieState;
+  const {searchedMoviesArray} = searchMovieState;
+
+  console.log(searchedMoviesArray);
 
   const handleSearchQuery = (value) => {
     if (value.length > 2) {
@@ -44,7 +46,6 @@ const usePopularMovies = () => {
 
   return {
     searchedMoviesArray,
-    searchQuery,
     loadSearchMovies,
     handleSearchQuery,
     clearSearchMovies,

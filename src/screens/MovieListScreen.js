@@ -48,7 +48,6 @@ const MovieListScreen = ({navigation}) => {
         searchScreenOn={handleSearchScreenOn}
         searchScreenOff={handleSearchScreenOff}
         handleSearchQuery={handleSearchQuery}
-        clearSearchMovies={clearSearchMovies}
       />
 
       {searchStatus && (
