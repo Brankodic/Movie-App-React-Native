@@ -16,7 +16,7 @@ const SearchInput = (props) => {
   const handlerInput = (value) => {
     setState({...state, inputValue: value});
     searchScreenOn();
-    handleSearchQuery(inputValue);
+    handleSearchQuery(value);
   };
   const handlerClear = () => {
     clearSearchMovies();
