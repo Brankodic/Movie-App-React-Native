@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import {getData, getSingleMovieUrl} from '../services/api';
+import useMovieDetails from '../services/useMovieDetails';
+
 import {MovieCastText} from '../components';
 
-const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
-
 const MovieDetailsScreen = ({route}) => {
-  const [state, setState] = useState({
-    isLoading: true,
-    movie: {},
-  });
+  const {state} = useMovieDetails(route.params.movieId);
+
   const {movie, image, year, genre, language, isLoading} = state;
   const {overview, title, release_date, runtime} = movie;
 
@@ -27,21 +24,6 @@ const MovieDetailsScreen = ({route}) => {
     overviewStyle,
     spinnerTextStyle,
   } = styles;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getData(getSingleMovieUrl(route.params.paramName));
-      setState({
-        ...state,
-        movie: res,
-        image: IMAGE_PATH + res.poster_path,
-        year: res.release_date.slice(0, 4),
-        language: res.original_language.toUpperCase(),
-        genre: res.genres[0].name,
-        isLoading: false,
-      });
-    })();
-  }, []);
 
   return (
     <View style={container}>
@@ -67,7 +49,7 @@ const MovieDetailsScreen = ({route}) => {
       </ImageBackground>
       <Text style={overviewTitle}>Overview</Text>
       <Text style={overviewStyle}>{overview}</Text>
-      <MovieCastText movieId={route.params.paramName} />
+      <MovieCastText state={state} />
     </View>
   );
 };

@@ -12,9 +12,7 @@ const MovieCard = (props) => {
     <TouchableOpacity
       style={img}
       title="Go to Details"
-      onPress={() =>
-        navigation.navigate('MovieDetails', {paramName: movie.id})
-      }>
+      onPress={() => navigation.navigate('MovieDetails', {movieId: movie.id})}>
       <Image
         style={img}
         source={{

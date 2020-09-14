@@ -1,38 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import _ from 'lodash';
 
-import {getData, getMovieCreditsUrl} from '../services/api';
 
-const MovieCastText = ({movieId}) => {
-  const [state, setState] = useState({
-    charachters: [],
-    director: '',
-    production: [],
-  });
+const MovieCastText = (props) => {
+  const {state} = props;
 
   const {container, box, boldText} = styles;
   const {charachters, director, production} = state;
-
-  useEffect(() => {
-    (async () => {
-      const res = await getData(getMovieCreditsUrl(movieId));
-
-      const direct = _.filter(res.crew, (crewMember) => {
-        return crewMember.job === 'Director';
-      });
-      const product = _.filter(res.crew, (crewMember) => {
-        return crewMember.department === 'Production';
-      });
-
-      setState({
-        ...state,
-        charachters: res.cast.slice(0, 2).map((n) => n.name),
-        director: direct[0].name,
-        production: product.slice(0, 3).map((n) => n.name),
-      });
-    })();
-  }, []);
 
   return (
     <View style={container}>
