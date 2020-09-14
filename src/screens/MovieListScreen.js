@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text} from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {API_KEY} from '@env';
+import usePopularMovies from '../services/usePopularMovies';
 import {getData, getMovieListUrl, getMoreMoviesUrl} from '../services/api';
 import {SearchInput, MovieList} from '../components';
 
 const MovieListScreen = ({navigation}) => {
   const [state, setState] = useState({
+    isLoading: true,
     apiMoviesPage: 2,
     loadMoreCounter: 1,
     movieSliceValue: 12,
@@ -21,7 +24,7 @@ const MovieListScreen = ({navigation}) => {
     searchStatus,
   } = state;
 
-  const {text} = styles;
+  const {text, spinnerTextStyle} = styles;
 
   useEffect(() => {
     if (loadMoreCounter < 2) {
@@ -30,6 +33,7 @@ const MovieListScreen = ({navigation}) => {
         setState({
           ...state,
           moviesArray: res.results,
+          isLoading: false,
         });
       })();
     }
@@ -70,6 +74,11 @@ const MovieListScreen = ({navigation}) => {
 
   return (
     <>
+      <Spinner
+        visible={isLoading}
+        textContent={'Loading...'}
+        textStyle={spinnerTextStyle}
+      />
       <SearchInput
         searchScreenOn={handleSearchScreenOn}
         searchScreenOff={handleSearchScreenOff}
@@ -91,6 +100,9 @@ const MovieListScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
   text: {
     backgroundColor: '#fff',
     color: '#0B253F',

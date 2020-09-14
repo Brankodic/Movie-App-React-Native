@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {API_KEY} from '@env';
 import {getData, getSingleMovieUrl} from '../services/api';
@@ -9,9 +10,10 @@ const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
 
 const MovieDetailsScreen = ({route}) => {
   const [state, setState] = useState({
+    isLoading: true,
     movie: {},
   });
-  const {movie, image, year, genre, language} = state;
+  const {movie, image, year, genre, language, isLoading} = state;
   const {overview, title, release_date, runtime} = movie;
 
   const {
@@ -24,6 +26,7 @@ const MovieDetailsScreen = ({route}) => {
     boldText,
     overviewTitle,
     overviewStyle,
+    spinnerTextStyle,
   } = styles;
 
   useEffect(() => {
@@ -38,12 +41,18 @@ const MovieDetailsScreen = ({route}) => {
         year: res.release_date.slice(0, 4),
         language: res.original_language.toUpperCase(),
         genre: res.genres[0].name,
+        isLoading: false,
       });
     })();
   }, []);
 
   return (
     <View style={container}>
+      <Spinner
+        visible={isLoading}
+        textContent={'Loading...'}
+        textStyle={spinnerTextStyle}
+      />
       <ImageBackground source={{uri: image}} style={imageStyle}>
         <View style={imgContainer}>
           <Text style={titleStyle}>
@@ -67,6 +76,9 @@ const MovieDetailsScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
