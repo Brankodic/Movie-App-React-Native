@@ -4,7 +4,7 @@ import {FlatList, View, StyleSheet} from 'react-native';
 import MovieCard from './MovieCard';
 
 const MovieList = (props) => {
-  const {moviesArray, movieSliceValue, loadMore, navigation} = props;
+  const {moviesArray, loadMore, navigation} = props;
   const {row, movieContainer, item} = styles;
 
   return (
@@ -14,7 +14,7 @@ const MovieList = (props) => {
         contentContainerStyle={movieContainer}
         columnWrapperStyle={row}
         onEndReached={loadMore}
-        data={moviesArray.slice(0, movieSliceValue)}
+        data={moviesArray}
         keyExtractor={(movie, index) => {
           return index.toString();
         }}

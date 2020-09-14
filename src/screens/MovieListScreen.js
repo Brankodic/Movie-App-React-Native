@@ -2,60 +2,18 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import {API_KEY} from '@env';
 import usePopularMovies from '../services/usePopularMovies';
-import {getData, getMovieListUrl, getMoreMoviesUrl} from '../services/api';
 import {SearchInput, MovieList} from '../components';
 
 const MovieListScreen = ({navigation}) => {
   const [state, setState] = useState({
-    isLoading: true,
-    apiMoviesPage: 2,
-    loadMoreCounter: 1,
-    movieSliceValue: 12,
-    moviesArray: [],
     searchStatus: false,
   });
-  const {
-    apiMoviesPage,
-    loadMoreCounter,
-    movieSliceValue,
-    moviesArray,
-    searchStatus,
-  } = state;
+  const {searchStatus} = state;
+
+  const {isLoading, moviesArray, loadMoreMovies} = usePopularMovies();
 
   const {text, spinnerTextStyle} = styles;
-
-  useEffect(() => {
-    if (loadMoreCounter < 2) {
-      (async () => {
-        const res = await getData(getMovieListUrl(API_KEY));
-        setState({
-          ...state,
-          moviesArray: res.results,
-          isLoading: false,
-        });
-      })();
-    }
-  }, []);
-
-  const handleLoadMore = () => {
-    (async () => {
-      const res = await getData(getMoreMoviesUrl(API_KEY, apiMoviesPage));
-      setState({
-        ...state,
-        moviesArray: moviesArray.concat(res.results),
-        apiMoviesPage: apiMoviesPage + 1,
-        loadMoreCounter: loadMoreCounter + 1,
-        movieSliceValue: movieSliceValue + 12,
-      });
-    })();
-    setState({
-      ...state,
-      loadMoreCounter: loadMoreCounter + 1,
-      movieSliceValue: movieSliceValue + 12,
-    });
-  };
 
   const handleSearchScreenOn = () => {
     if (!searchStatus) {
@@ -75,7 +33,7 @@ const MovieListScreen = ({navigation}) => {
   return (
     <>
       <Spinner
-        visible={isLoading}
+        value={isLoading}
         textContent={'Loading...'}
         textStyle={spinnerTextStyle}
       />
@@ -88,9 +46,8 @@ const MovieListScreen = ({navigation}) => {
         <>
           <Text style={text}>What's Popular</Text>
           <MovieList
-            loadMore={handleLoadMore}
+            loadMore={loadMoreMovies}
             moviesArray={moviesArray}
-            movieSliceValue={movieSliceValue}
             navigation={navigation}
           />
         </>

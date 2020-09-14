@@ -4,13 +4,12 @@ import {API_KEY} from '@env';
 import {getData, getMovieListUrl, getMoreMoviesUrl} from './api';
 
 const usePopularMovies = () => {
-  const [movies, setMovies] = useState();
-
   const [movieState, setState] = useState({
     isLoading: true,
     apiMoviesPage: 2,
     loadMoreCounter: 1,
     movieSliceValue: 12,
+    moviesArray: [],
     searchStatus: false,
   });
 
@@ -18,20 +17,23 @@ const usePopularMovies = () => {
     apiMoviesPage,
     loadMoreCounter,
     movieSliceValue,
+    moviesArray,
     isLoading,
   } = movieState;
-  console.log(movies);
-  console.log(loadMoreCounter);
 
   useEffect(() => {
     if (loadMoreCounter < 2) {
       (async () => {
         const res = await getData(getMovieListUrl(API_KEY));
-        setMovies(res.results);
+        setState({
+          ...movieState,
+          moviesArray: res.results,
+        });
       })();
       setState({
         ...movieState,
         isLoading: false,
+        loadMoreCounter: loadMoreCounter + 1,
       });
     }
   }, []);
@@ -39,12 +41,12 @@ const usePopularMovies = () => {
   const loadMoreMovies = () => {
     (async () => {
       const res = await getData(getMoreMoviesUrl(API_KEY, apiMoviesPage));
-      setMovies(...movies, movies.concat(res.results));
       setState({
         ...movieState,
         apiMoviesPage: apiMoviesPage + 1,
         loadMoreCounter: loadMoreCounter + 1,
         movieSliceValue: movieSliceValue + 12,
+        moviesArray: moviesArray.concat(res.results),
       });
     })();
     setState({
@@ -54,7 +56,7 @@ const usePopularMovies = () => {
     });
   };
 
-  return [movies, movieState, isLoading, loadMoreMovies];
+  return {moviesArray, movieState, isLoading, loadMoreMovies};
 };
 
 export default usePopularMovies;
