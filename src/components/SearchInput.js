@@ -4,31 +4,29 @@ import {SearchBar} from 'react-native-elements';
 import useSearchMovies from '../services/useSearchMovies';
 
 const SearchInput = (props) => {
-  const [state, setState] = useState({
-    inputValue: '',
-  });
-  const {inputValue} = state;
+  const [inputState, setState] = useState('');
 
   const {searchScreenOn, searchScreenOff, handleSearchQuery} = props;
 
   const {clearSearchMovies} = useSearchMovies();
 
   const handlerInput = (value) => {
-    setState({...state, inputValue: value});
+    setState(value);
     searchScreenOn();
     handleSearchQuery(value);
   };
   const handlerClear = () => {
     clearSearchMovies();
-    setState({...state, inputValue: ''});
+    setState('');
   };
 
   return (
     <SearchBar
+      onTouchStart={searchScreenOn}
       onChangeText={(text) => handlerInput(text)}
       onClear={handlerClear}
       onCancel={searchScreenOff}
-      value={inputValue}
+      value={inputState}
       platform="ios"
       placeholder="Search"
     />

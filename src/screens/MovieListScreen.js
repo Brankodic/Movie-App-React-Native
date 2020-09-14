@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -7,14 +7,11 @@ import usePopularMovies from '../services/usePopularMovies';
 import {SearchInput, MovieList} from '../components';
 
 const MovieListScreen = ({navigation}) => {
-  const [state, setState] = useState({
-    searchStatus: false,
-  });
-  const {searchStatus} = state;
+  const [searchListState, setState] = useState(false);
 
   const {isLoading, moviesArray, loadMoreMovies} = usePopularMovies();
   const {
-    searchedMoviesArray,
+    searchMovieState,
     handleSearchQuery,
     clearSearchMovies,
   } = useSearchMovies();
@@ -22,19 +19,28 @@ const MovieListScreen = ({navigation}) => {
   const {text, spinnerTextStyle} = styles;
 
   const handleSearchScreenOn = () => {
-    if (!searchStatus) {
-      setState({
-        ...state,
-        searchStatus: true,
-      });
+    if (!searchListState) {
+      setState(true);
     }
   };
   const handleSearchScreenOff = () => {
     clearSearchMovies();
-    setState({
-      ...state,
-      searchStatus: false,
-    });
+    setState(false);
+  };
+
+  const handleRenderedList = () => {
+    if (searchListState) {
+      return searchMovieState;
+    } else {
+      return moviesArray;
+    }
+  };
+  const handleRenderedText = () => {
+    if (searchListState) {
+      return 'Search Results';
+    } else {
+      return "What's Popular";
+    }
   };
 
   return (
@@ -49,27 +55,12 @@ const MovieListScreen = ({navigation}) => {
         searchScreenOff={handleSearchScreenOff}
         handleSearchQuery={handleSearchQuery}
       />
-
-      {searchStatus && (
-        <>
-          <Text style={text}>Search Results</Text>
-          <MovieList
-            loadMore={loadMoreMovies}
-            moviesArray={searchedMoviesArray}
-            navigation={navigation}
-          />
-        </>
-      )}
-      {!searchStatus && (
-        <>
-          <Text style={text}>What's Popular</Text>
-          <MovieList
-            loadMore={loadMoreMovies}
-            moviesArray={moviesArray}
-            navigation={navigation}
-          />
-        </>
-      )}
+      <Text style={text}>{handleRenderedText()}</Text>
+      <MovieList
+        moviesArray={handleRenderedList()}
+        loadMore={loadMoreMovies}
+        navigation={navigation}
+      />
     </>
   );
 };

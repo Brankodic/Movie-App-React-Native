@@ -1,17 +1,10 @@
 import {useState} from 'react';
 import {debounce} from 'lodash';
 
-import {API_KEY} from '@env';
 import {getData, getSearchMoviesUrl} from './api';
 
 const usePopularMovies = () => {
-  const [searchMovieState, setState] = useState({
-    searchedMoviesArray,
-  });
-
-  const {searchedMoviesArray} = searchMovieState;
-
-  console.log(searchedMoviesArray);
+  const [searchMovieState, setState] = useState([]);
 
   const handleSearchQuery = (value) => {
     if (value.length > 2) {
@@ -20,33 +13,23 @@ const usePopularMovies = () => {
       }, 500);
       handleChange(value);
     } else {
-      setState({
-        ...searchMovieState,
-        searchedMoviesArray: undefined,
-      });
+      setState([]);
     }
   };
 
   const clearSearchMovies = () => {
-    setState({
-      ...searchMovieState,
-      searchedMovieArray: undefined,
-    });
+    setState([]);
   };
 
   const loadSearchMovies = (value) => {
     (async () => {
-      const res = await getData(getSearchMoviesUrl(API_KEY, value));
-      setState({
-        ...searchMovieState,
-        searchedMoviesArray: res.results.slice(0, 20),
-      });
+      const res = await getData(getSearchMoviesUrl(value));
+      setState(res.results.slice(0, 60));
     })();
   };
 
   return {
-    searchedMoviesArray,
-    loadSearchMovies,
+    searchMovieState,
     handleSearchQuery,
     clearSearchMovies,
   };

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import _ from 'lodash';
 
-import {API_KEY} from '@env';
 import {getData, getMovieCreditsUrl} from '../services/api';
 
 const MovieCastText = ({movieId}) => {
@@ -12,43 +11,49 @@ const MovieCastText = ({movieId}) => {
     production: [],
   });
 
+  const {container, box, boldText} = styles;
+  const {charachters, director, production} = state;
+
   useEffect(() => {
     (async () => {
-      const res = await getData(getMovieCreditsUrl(API_KEY, movieId));
-      const directors = _.filter(res.crew, (crewMember) => {
+      const res = await getData(getMovieCreditsUrl(movieId));
+
+      const direct = _.filter(res.crew, (crewMember) => {
         return crewMember.job === 'Director';
       });
-      const production = _.filter(res.crew, (crewMember) => {
+      const product = _.filter(res.crew, (crewMember) => {
         return crewMember.department === 'Production';
       });
 
       setState({
         ...state,
         charachters: res.cast.slice(0, 2).map((n) => n.name),
-        director: directors[0].name,
-        production: production.slice(0, 3).map((n) => n.name),
+        director: direct[0].name,
+        production: product.slice(0, 3).map((n) => n.name),
       });
     })();
   }, []);
 
   return (
-    <View style={styles.container}>
-      {state.charachters.map((name, key) => {
+    <View style={container}>
+      {charachters.map((name, key) => {
         return (
-          <View style={styles.box} key={key}>
-            <Text style={styles.boldText}>{name}</Text>
+          <View style={box} key={key}>
+            <Text style={boldText}>{name}</Text>
             <Text>Cast</Text>
           </View>
         );
       })}
-      <View style={styles.box}>
-        <Text style={styles.boldText}>{state.director}</Text>
+
+      <View style={box}>
+        <Text style={boldText}>{director}</Text>
         <Text>Director</Text>
       </View>
-      {state.production.map((name, key) => {
+
+      {production.map((name, key) => {
         return (
-          <View style={styles.box} key={key}>
-            <Text style={styles.boldText}>{name}</Text>
+          <View style={box} key={key}>
+            <Text style={boldText}>{name}</Text>
             <Text>Production</Text>
           </View>
         );

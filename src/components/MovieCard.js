@@ -5,18 +5,18 @@ const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
 
 const MovieCard = (props) => {
   const {movie, navigation} = props;
+  const {img} = styles;
   const imageUrl = IMAGE_PATH + movie.poster_path;
 
   return (
     <TouchableOpacity
-      key={movie.id}
-      style={styles.img}
+      style={img}
       title="Go to Details"
       onPress={() =>
         navigation.navigate('MovieDetails', {paramName: movie.id})
       }>
       <Image
-        style={styles.img}
+        style={img}
         source={{
           uri: imageUrl,
         }}
@@ -24,6 +24,7 @@ const MovieCard = (props) => {
     </TouchableOpacity>
   );
 };
+
 const styles = StyleSheet.create({
   img: {
     flex: 1,
@@ -31,4 +32,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 });
+
 export default MovieCard;

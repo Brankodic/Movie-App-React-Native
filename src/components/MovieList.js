@@ -7,6 +7,11 @@ const MovieList = (props) => {
   const {moviesArray, loadMore, navigation} = props;
   const {row, movieContainer, item} = styles;
 
+  const handlerKey = (movie) => {
+    const key = movie.id + Math.floor(Math.random() * 100);
+    return key.toString();
+  };
+
   return (
     <View>
       <FlatList
@@ -15,8 +20,8 @@ const MovieList = (props) => {
         columnWrapperStyle={row}
         onEndReached={loadMore}
         data={moviesArray}
-        keyExtractor={(movie, index) => {
-          return index.toString();
+        keyExtractor={(movie) => {
+          return handlerKey(movie);
         }}
         renderItem={(movie) => {
           return (

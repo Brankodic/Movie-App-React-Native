@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, ImageBackground} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import {API_KEY} from '@env';
 import {getData, getSingleMovieUrl} from '../services/api';
 import {MovieCastText} from '../components';
 
@@ -31,9 +30,7 @@ const MovieDetailsScreen = ({route}) => {
 
   useEffect(() => {
     (async () => {
-      const res = await getData(
-        getSingleMovieUrl(API_KEY, route.params.paramName),
-      );
+      const res = await getData(getSingleMovieUrl(route.params.paramName));
       setState({
         ...state,
         movie: res,
