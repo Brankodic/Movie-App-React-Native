@@ -7,16 +7,27 @@ const SearchInput = (props) => {
   });
   const {inputValue} = state;
 
-  const {searchScreenOn, searchScreenOff} = props;
+  const {
+    searchScreenOn,
+    searchScreenOff,
+    handleSearchQuery,
+    clearSearchMovies,
+  } = props;
 
-  function handlerInput(value) {
+  const handlerInput = (value) => {
     setState({...state, inputValue: value});
     searchScreenOn();
-  }
+    handleSearchQuery(inputValue);
+  };
+  const handlerClear = () => {
+    clearSearchMovies();
+    setState({...state, inputValue: ''});
+  };
 
   return (
     <SearchBar
       onChangeText={(text) => handlerInput(text)}
+      onClear={handlerClear}
       onCancel={searchScreenOff}
       value={inputValue}
       platform="ios"

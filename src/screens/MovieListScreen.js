@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import useSearchMovies from '../services/useSearchMovies';
 import usePopularMovies from '../services/usePopularMovies';
 import {SearchInput, MovieList} from '../components';
 
@@ -12,6 +13,11 @@ const MovieListScreen = ({navigation}) => {
   const {searchStatus} = state;
 
   const {isLoading, moviesArray, loadMoreMovies} = usePopularMovies();
+  const {
+    searchedMoviesArray,
+    handleSearchQuery,
+    clearSearchMovies,
+  } = useSearchMovies();
 
   const {text, spinnerTextStyle} = styles;
 
@@ -24,6 +30,7 @@ const MovieListScreen = ({navigation}) => {
     }
   };
   const handleSearchScreenOff = () => {
+    clearSearchMovies();
     setState({
       ...state,
       searchStatus: false,
@@ -40,8 +47,20 @@ const MovieListScreen = ({navigation}) => {
       <SearchInput
         searchScreenOn={handleSearchScreenOn}
         searchScreenOff={handleSearchScreenOff}
+        handleSearchQuery={handleSearchQuery}
+        clearSearchMovies={clearSearchMovies}
       />
-      {searchStatus && <Text style={text}>Search Results</Text>}
+
+      {searchStatus && (
+        <>
+          <Text style={text}>Search Results</Text>
+          <MovieList
+            loadMore={loadMoreMovies}
+            moviesArray={searchedMoviesArray}
+            navigation={navigation}
+          />
+        </>
+      )}
       {!searchStatus && (
         <>
           <Text style={text}>What's Popular</Text>

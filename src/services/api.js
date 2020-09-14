@@ -14,6 +14,10 @@ export const getMovieCreditsUrl = (API_KEY, movieId) => {
   return `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${API_KEY}`;
 };
 
+export const getSearchMoviesUrl = (API_KEY, name) => {
+  return `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${name}&page=1&include_adult=false`;
+};
+
 export async function getData(url) {
   let res = await fetch(url);
   return res

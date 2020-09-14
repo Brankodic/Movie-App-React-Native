@@ -10,7 +10,6 @@ const usePopularMovies = () => {
     loadMoreCounter: 1,
     movieSliceValue: 12,
     moviesArray: [],
-    searchStatus: false,
   });
 
   const {
