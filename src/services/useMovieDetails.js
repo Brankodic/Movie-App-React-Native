@@ -9,6 +9,10 @@ const useMovieDetails = (movieId) => {
   const [state, setState] = useState({
     isLoading: true,
     movie: {},
+    image: '',
+    year: '',
+    language: '',
+    genre: '',
     charachters: [],
     director: '',
     production: [],
