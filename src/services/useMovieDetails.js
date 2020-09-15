@@ -3,13 +3,11 @@ import _ from 'lodash';
 
 import {getData, getSingleMovieUrl, getMovieCreditsUrl} from '../services/api';
 
-const IMAGE_PATH = 'https://image.tmdb.org/t/p/w500';
-
 const useMovieDetails = (movieId) => {
   const [state, setState] = useState({
     isLoading: true,
     movie: {},
-    image: '',
+    image: 'https://image.tmdb.org/t/p/w500',
     year: '',
     language: '',
     genre: '',
@@ -34,7 +32,7 @@ const useMovieDetails = (movieId) => {
           setState({
             ...state,
             movie: data,
-            image: IMAGE_PATH + data.poster_path,
+            image: state.image + data.poster_path,
             year: data.release_date.slice(0, 4),
             language: data.original_language.toUpperCase(),
             genre: data.genres[0].name,
