@@ -30,6 +30,7 @@ class App extends React.Component {
               headerRight: () => <View />,
               cardStyle: {backgroundColor: 'white'},
               headerStyle: {backgroundColor: '#0B253F'},
+              headerBackTitleVisible: false
             }}
             name="MovieDetails"
             component={MovieDetailsScreen}
